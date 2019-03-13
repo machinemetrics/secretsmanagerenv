@@ -2,7 +2,6 @@ package aws
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/secretsmanager"
@@ -25,7 +24,7 @@ func GetSecretData(name, region string) (map[string]interface{}, error) {
 
 	err = json.Unmarshal([]byte(*result.SecretString), &secrets)
 	if err != nil {
-		return nil, fmt.Errorf("%s is not a key-pair secret", name)
+		return nil, err
 	}
 
 	return secrets, nil
