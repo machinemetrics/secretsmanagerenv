@@ -9,8 +9,8 @@ import (
 	"os"
 )
 
-func GetSecretData(name, region string) (map[string]string, error) {
-	var secrets map[string]string
+func GetSecretData(name, region string) (map[string]interface{}, error) {
+	var secrets map[string]interface{}
 	// Grab env vars from Secrets Manager
 	session := getSession(region)
 	svc := secretsmanager.New(session)

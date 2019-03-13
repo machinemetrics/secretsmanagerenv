@@ -28,10 +28,10 @@ func RunCommandWithSecret(secrets []string, region string, args []string) error 
 	return cmd.Run()
 }
 
-func mapToEnv(m map[string]string) []string {
+func mapToEnv(m map[string]interface{}) []string {
 	var ret []string
 	for key, value := range m {
-		keyval := fmt.Sprintf("%s=%s", key, value)
+		keyval := fmt.Sprintf("%s=%v", key, value)
 		ret = append(ret, keyval)
 	}
 	return ret
