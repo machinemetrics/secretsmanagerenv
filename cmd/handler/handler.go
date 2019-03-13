@@ -2,7 +2,7 @@ package handler
 
 import (
 	"fmt"
-	"github.com/cgetzen/secretsmanagerenv/pkg/aws"
+	"github.com/gyepisam/secretsmanagerenv/pkg/aws"
 	"os"
 	"os/exec"
 )

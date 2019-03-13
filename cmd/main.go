@@ -3,7 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/cgetzen/secretsmanagerenv/cmd/handler"
+	"github.com/gyepisam/secretsmanagerenv/cmd/handler"
 	"github.com/spf13/cobra"
 	"os"
 	"strings"
