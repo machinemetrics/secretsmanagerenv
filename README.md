@@ -9,5 +9,10 @@ Smenv is built around the concept of [twelve factor apps](https://12factor.net/c
 
 ## Usage
 ```bash
+smenv -s SECRET [-s SECRET]... [-r AWS_REGION] COMMAND
+```
+
+## Example
+```bash
 smenv -s rails_secrets/prod -s hello_world_secret -r us-east-1 "rails s -b 0.0.0.0"
 ```
