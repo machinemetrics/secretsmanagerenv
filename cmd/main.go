@@ -3,15 +3,17 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	shlex "github.com/anmitsu/go-shlex"
 	"github.com/gyepisam/secretsmanagerenv/cmd/handler"
 	"github.com/spf13/cobra"
 	"os"
-	"strings"
 )
 
 var (
 	secrets []string
 	region  string
+	upcase  bool
+	prefix  string
 )
 
 var rootCmd = &cobra.Command{
@@ -28,7 +30,9 @@ var rootCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(_ *cobra.Command, args []string) {
-		if err := handler.RunCommandWithSecret(secrets, region, parse(args)); err != nil {
+		if command, err := parse(args); err != nil {
+			fmt.Println(err.Error())
+		} else if err := handler.RunCommandWithSecret(secrets, region, command, upcase, prefix); err != nil {
 			fmt.Println(err.Error())
 		}
 	},
@@ -41,17 +45,21 @@ func Execute() {
 	}
 }
 
-func parse(args []string) []string {
+func parse(args []string) ([]string, error) {
 	var ret []string
 	for _, arg := range args {
-		for _, a := range strings.Split(arg, " ") {
-			ret = append(ret, a)
+		if words, err := shlex.Split(arg, true); err != nil {
+			return nil, err
+		} else {
+			ret = append(ret, words...)
 		}
 	}
-	return ret
+	return ret, nil
 }
 
 func init() {
 	rootCmd.PersistentFlags().StringSliceVarP(&secrets, "secret", "s", []string{}, "name of secret")
 	rootCmd.PersistentFlags().StringVarP(&region, "region", "r", "", "region")
+	rootCmd.PersistentFlags().BoolVarP(&upcase, "upcase", "u", false, "Upcase environment variables")
+	rootCmd.PersistentFlags().StringVarP(&prefix, "prefix", "p", "", "Prepend PREFIX to environment variables")
 }

@@ -5,20 +5,20 @@ import (
 	"github.com/gyepisam/secretsmanagerenv/pkg/aws"
 	"os"
 	"os/exec"
+	"strings"
 )
 
-func RunCommandWithSecret(secrets []string, region string, args []string) error {
+func RunCommandWithSecret(secrets []string, region string, args []string, upcase bool, prefix string) error {
 	var env []string
 
-	for _, secret := range secrets {
-		data, err := aws.GetSecretData(secret, region)
-		if err != nil {
-			return err
-		}
-		for _, pair := range mapToEnv(data) {
-			env = append(env, pair)
-		}
-	}
+    for _, secret := range secrets {
+      if data, err := aws.GetSecretData(secret, region); err != nil {
+        return err
+      } else {
+        moreEnv := mapToEnv(data, upcase, prefix)
+        env = append(env, moreEnv...)
+      }
+    }
 
 	cmd := exec.Command(args[0], args[1:]...)
 	cmd.Env = append(os.Environ(), env...)
@@ -28,10 +28,18 @@ func RunCommandWithSecret(secrets []string, region string, args []string) error 
 	return cmd.Run()
 }
 
-func mapToEnv(m map[string]interface{}) []string {
+func mapToEnv(m map[string]interface{}, upcase bool, prefix string) []string {
 	var ret []string
+	var k string
 	for key, value := range m {
-		keyval := fmt.Sprintf("%s=%v", key, value)
+		k = key
+		if upcase {
+			k = strings.ToUpper(k)
+		}
+		if len(prefix) > 0 {
+			k = prefix + k
+		}
+		keyval := fmt.Sprintf("%s=%v", k, value)
 		ret = append(ret, keyval)
 	}
 	return ret
