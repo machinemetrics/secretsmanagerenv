@@ -36,10 +36,9 @@ func getSession(region string) *session.Session {
 		defer os.Unsetenv("AWS_SDK_LOAD_CONFIG")
 	}
 
+	config := aws.Config{}
 	if len(region) > 0 {
-		return session.Must(session.NewSession(&aws.Config{
-			Region: aws.String(region),
-		}))
+		config.Region = aws.String(region)
 	}
-	return session.Must(session.NewSession())
+	return session.Must(session.NewSession(&config))
 }
