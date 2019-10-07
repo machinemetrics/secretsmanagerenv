@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	shlex "github.com/anmitsu/go-shlex"
-	"github.com/gyepisam/secretsmanagerenv/cmd/handler"
+	"github.com/machinemetrics/secretsmanagerenv/cmd/handler"
 	"github.com/spf13/cobra"
 	"os"
 )

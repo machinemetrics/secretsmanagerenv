@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gyepisam/secretsmanagerenv/cmd"
+	"github.com/machinemetrics/secretsmanagerenv/cmd"
 )
 
 func main() {

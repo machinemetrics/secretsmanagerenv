@@ -2,7 +2,7 @@ package handler
 
 import (
 	"fmt"
-	"github.com/gyepisam/secretsmanagerenv/pkg/aws"
+	"github.com/machinemetrics/secretsmanagerenv/pkg/aws"
 	"os"
 	"os/exec"
 	"strings"
